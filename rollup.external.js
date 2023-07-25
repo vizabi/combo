@@ -1,0 +1,1 @@
+module.exports = require("vizabi-tool-bundler").bind(null, 'Combo', 'combo', __dirname, require("./package.json"));
