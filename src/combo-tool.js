@@ -200,7 +200,9 @@ export default class Combo extends BaseComponent {
     const classArray = this.root.ui.chart.splitVertical ? splitDirectionClasses : splitDirectionClasses.reverse();
     this.DOM.comboTool.classed(classArray[0], false);
     this.DOM.comboTool.classed(classArray[1], true);    
-    this.services.layout._resizeHandler();
+    setTimeout(() => {
+      this.services.layout._resizeHandler();
+    }, 0);
   }
 
   changeSplitRatio() {
@@ -211,7 +213,9 @@ export default class Combo extends BaseComponent {
     } else {
       this.DOM.comboTool.attr("style", `grid-template-rows: ${ratio}fr ${Math.floor(100-ratio*100)/100}fr`);
     }
-    this.services.layout._resizeHandler();
+    setTimeout(() => {
+      this.services.layout._resizeHandler();
+    }, 0);
   }
 
   resize() {

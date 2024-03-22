@@ -1,6 +1,6 @@
 {
   "name": "@vizabi/combo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vizabi combo",
   "scripts": {
     "prepublishOnly": "npm run build",
