@@ -1,3 +1,4 @@
+import { runInAction } from "mobx";
 import "./styles.scss";
 import {
   BaseComponent,
@@ -181,37 +182,42 @@ export default class Combo extends BaseComponent {
           _this.DOM.splitLineDrag.attr("style", null);
         })
         .on("end.update", (event, d) => {
-          if (_this.root.ui.chart.splitVertical) {
-            _this.root.ui.chart.splitRatio = +((d._x / _this.toolWidth).toFixed(2));
-          } else {
-            _this.root.ui.chart.splitRatio = +((d._y / _this.toolHeight).toFixed(2));
-          }
+          runInAction(() => {
+            if (_this.root.ui.chart.splitVertical) {
+              _this.root.ui.chart.splitRatio = +((d._x / _this.toolWidth).toFixed(2));
+            } else {
+              _this.root.ui.chart.splitRatio = +((d._y / _this.toolHeight).toFixed(2));
+            }
+          });
         })
     );
     this.DOM.splitDirectionButton.on("click", () => {
-      this.root.ui.chart.splitVertical = !this.root.ui.chart.splitVertical;
-      this.root.ui.chart.splitRatio = 0.5;
+      runInAction(() => {
+        this.root.ui.chart.splitVertical = !this.root.ui.chart.splitVertical;
+        this.root.ui.chart.splitRatio = 0.5;
+      });
     });
 
   }
 
-  changeSplitDirection() {
-    const splitDirectionClasses = ["vzb-split-horizontal", "vzb-split-vertical"];
-    const classArray = this.root.ui.chart.splitVertical ? splitDirectionClasses : splitDirectionClasses.reverse();
-    this.DOM.comboTool.classed(classArray[0], false);
-    this.DOM.comboTool.classed(classArray[1], true);    
-    setTimeout(() => {
-      this.services.layout._resizeHandler();
-    }, 0);
-  }
-
-  changeSplitRatio() {
-    const ratio = this.root.ui.chart.splitRatio;
+  changeSplitRatioOrDirection() {
+    const styleAttr = this.DOM.comboTool.attr("style");
+    const classAttr = this.DOM.comboTool.attr("class");
+    const splitVertical = this.root.ui.chart.splitVertical;
     
-    if (this.root.ui.chart.splitVertical) {
-      this.DOM.comboTool.attr("style", `grid-template-columns: ${ratio}fr ${Math.floor(100-ratio*100)/100}fr`);
-    } else {
-      this.DOM.comboTool.attr("style", `grid-template-rows: ${ratio}fr ${Math.floor(100-ratio*100)/100}fr`);
+    const splitDirectionClasses = ["vzb-split-horizontal", "vzb-split-vertical"];
+    const classArray = splitVertical ? splitDirectionClasses : splitDirectionClasses.reverse();
+    
+    if (classAttr.includes(classArray[0])) {
+      this.DOM.comboTool.classed(classArray[0], false);
+      this.DOM.comboTool.classed(classArray[1], true);    
+    }
+
+    const ratio = this.root.ui.chart.splitRatio;
+    const newStyleAttr = (splitVertical ? "grid-template-columns" : "grid-template-rows") + `: ${ratio}fr ${Math.floor(100-ratio*100)/100}fr`;
+    
+    if (newStyleAttr !== styleAttr) {
+      this.DOM.comboTool.attr("style", newStyleAttr);
     }
     setTimeout(() => {
       this.services.layout._resizeHandler();
@@ -226,9 +232,8 @@ export default class Combo extends BaseComponent {
   }
 
   draw() {
-    this.addReaction(this.changeSplitDirection);
     this.addReaction(this.resize);
-    this.addReaction(this.changeSplitRatio);
+    this.addReaction(this.changeSplitRatioOrDirection);
   }
 
 }
