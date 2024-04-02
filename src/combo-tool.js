@@ -240,8 +240,21 @@ export default class Combo extends BaseComponent {
 Combo.DEFAULT_UI = {
   chart: {
     splitVertical: false,
-    splitRatio: 0.5
-  },
+    splitRatio: 0.5,
+    map: {
+      "showBubbles": true,
+      "showAreas": false,
+      "showMap": true,
+      "mapEngine": "mapbox",
+      "mapStyle": "mapbox://styles/mapbox/light-v9",    
+      overflowBottom: 50
+    },
+    opacitySelectDim: 0.3,
+    opacityRegular: 0.5,
+    cursorMode: "arrow",
+    panWithArrow: true,
+    zoomOnScrolling: true,
+  }
 };
 
 Combo.versionInfo = { version: __VERSION, build: __BUILD, package: __PACKAGE_JSON_FIELDS, sharedComponents: versionInfo};
