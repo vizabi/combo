@@ -242,6 +242,7 @@ Combo.DEFAULT_UI = {
     splitVertical: false,
     splitRatio: 0.5,
     map: {
+      "missingDataColor": "none", //"#FDFDFD" or "none" for transparent. "none" makes it faster
       "showBubbles": true,
       "showAreas": false,
       "showMap": true,
