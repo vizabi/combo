@@ -109,7 +109,7 @@ export default class Combo extends BaseComponent {
       <div class="vzb-chart-combo ${toolPlaceholders[0]}"></div>
       <div class="vzb-chart-combo ${toolPlaceholders[1]}"></div>
       <div class="vzb-split-line vzb-split-line-front"></div>
-      <div class="vzb-split-direction-button"></div>
+      <div class="vzb-split-direction-button vzb-noexport"></div>
       <div class="vzb-split-overlay vzb-hidden"></div>
       <div class="vzb-split-line vzb-split-line-drag vzb-hidden"></div>
     </div>
