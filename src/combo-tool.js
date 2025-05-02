@@ -231,15 +231,8 @@ export default class Combo extends BaseComponent {
     this.toolWidth = (this.DOM.comboTool.node().clientWidth) || 0;    
   }
 
-  extApiMapOverflowBottomCheck() {
-    if (this.root.children[0].constructor.name !== "_VizabiExtApiMap") return;
-    
-    this.root.ui.chart.map.overflowBottom = this.root.ui.chart.splitVertical ? viz.root.DEFAULT_UI.chart.map.overflowBottom : 0;
-  }
-
   draw() {
     this.addReaction(this.resize);
-    this.addReaction(this.extApiMapOverflowBottomCheck);
     this.addReaction(this.changeSplitRatioOrDirection);
   }
   
@@ -254,8 +247,7 @@ Combo.DEFAULT_UI = {
       "showAreas": false,
       "showMap": true,
       "mapEngine": "mapbox",
-      "mapStyle": "mapbox://styles/mapbox/light-v9",    
-      overflowBottom: 50
+      "mapStyle": "mapbox://styles/mapbox/light-v9"
     },
     opacitySelectDim: 0.3,
     opacityRegular: 0.5,
