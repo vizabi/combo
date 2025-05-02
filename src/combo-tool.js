@@ -74,7 +74,7 @@ export default class Combo extends BaseComponent {
     },{
       type: DataWarning,
       placeholder: ".vzb-datawarning",
-      options: {button: ".vzb-datawarning-button"},
+      options: {appendButtonHere: ".vzb-tool-combo"},
       model: marker,
       name: "data-warning"
     },{
@@ -256,6 +256,13 @@ Combo.DEFAULT_UI = {
     cursorMode: "arrow",
     panWithArrow: true,
     zoomOnScrolling: true,
+  },
+  "data-warning": {
+    margin: {
+      LARGE: { bottom: 90 },
+      MEDIUM: { bottom: 70 },
+      SMALL: { bottom: 50 }
+    }
   }
 };
 
