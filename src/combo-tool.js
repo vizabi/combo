@@ -34,17 +34,17 @@ export default class Combo extends BaseComponent {
     const toolComponents = config.options.toolComponents ? config.options.toolComponents : [BubbleChart.Base, ExtApiMap.Base];
     const toolPlaceholders = toolComponents.map(toolComponent => `vzb-${toolComponent.name.toLowerCase()}`);
   
-    const markerName = config.options?.markerNames?.main || "bubble";
-    const fullMarker = config.model.markers[markerName];
+    const fullMarker = config.model.markers?.bubble;
+    const fullMarkerLegend = config.model.markers?.legend;
+    const fullMarkerLegendMap = config.model.markers?.legend_map;
 
-    config.Vizabi.utils.applyDefaults(fullMarker.config, toolComponents[0].DEFAULT_CORE(markerName));   
-    config.Vizabi.utils.applyDefaults(fullMarker.config, toolComponents[1].DEFAULT_CORE(markerName));   
-    
+    config.Vizabi.utils.applyDefaults(fullMarker?.config, Combo.DEFAULT_MODEL.bubble);   
+    config.Vizabi.utils.applyDefaults(fullMarkerLegend?.config || {}, Combo.DEFAULT_MODEL.legend);  
+    config.Vizabi.utils.applyDefaults(fullMarkerLegendMap?.config || {}, Combo.DEFAULT_MODEL.legend_map);  
+     
     const frameType = config.Vizabi.stores.encodings.modelTypes.frame;
     const { marker, splashMarker } = frameType.splashMarker(fullMarker);
     
-    config.model.markers[markerName] = marker;
-
     config.name = "combo";
 
     config.subcomponents = [{
@@ -247,28 +247,295 @@ export default class Combo extends BaseComponent {
   
 }
 Combo.DEFAULT_UI = {
-  chart: {
-    splitVertical: false,
-    splitRatio: 0.5,
-    map: {
-      "missingDataColor": false, //"#FDFDFD" or false for transparent
-      "showBubbles": true,
-      "showAreas": false,
-      "showMap": true,
-      "mapEngine": "mapbox",
-      "mapStyle": "mapbox://styles/mapbox/light-v9"
+  "locale": { "shortNumberFormat": true },
+  "layout": { "projector": false },
+  "buttons": {
+    "buttons": ["markercontrols", "colors", "trails", "moreoptions", "presentation", "sidebarcollapse", "fullscreen"]
+  },
+  "dialogs": {
+    "dialogs": {
+      "popup": ["colors", "markercontrols", "moreoptions"],
+      "sidebar": ["colors", "markercontrols", "mapcolors", "size", "zoom"],
+      "moreoptions": [
+        "opacity",
+        "speed",
+        "axes",
+        "size",
+        "colors",
+        "label",
+        "mapcolors",
+        "mapoptions",
+        "zoom",
+        "technical",
+        "presentation",
+        "about"
+      ]
     },
-    opacitySelectDim: 0.3,
-    opacityRegular: 0.5,
-    cursorMode: "arrow",
-    panWithArrow: true,
-    zoomOnScrolling: true,
+    "markercontrols": {
+      "disableSlice": true,
+      "disableAddRemoveGroups": true,
+      "primaryDim": null,
+      "drilldown": null,
+      "shortcutForSwitch": false,
+      "shortcutForSwitch_allow": null
+    } 
+  },
+  "marker-contextmenu": {
+    "primaryDim": null,
+    "drilldown": null,
+  },
+  "tree-menu": {
+    "showDataSources": false,
+    "folderStrategyByDataset": {}
+  },
+  "chart": {
+    "splitVertical": false,
+    "splitRatio": 0.5,
+
+    "show_ticks": true,
+    "showForecast": false,
+    "showForecastOverlay": true,
+    "pauseBeforeForecast": true,
+    "endBeforeForecast": "2022",
+    "opacityHighlight": 1.0,
+    "opacitySelect": 1.0,
+    "opacityHighlightDim": 0.1,
+    "opacitySelectDim": 0.3,
+    "opacityRegular": 0.8,
+    "timeInBackground": true,
+    "timeInTrails": true,
+    "lockNonSelected": 0,
+    "numberFormatSIPrefix": true,
+    "panWithArrow": true,
+    "adaptMinMaxZoom": false,
+    "cursorMode": "arrow",
+    "zoomOnScrolling": true,
+    "superhighlightOnMinimapHover": true,
+    "whenHovering": {
+      "showProjectionLineX": true,
+      "showProjectionLineY": true,
+      "higlightValueX": true,
+      "higlightValueY": true
+    },
+    "labels": {
+      "enabled": true,
+      "dragging": true,
+      "removeLabelBox": true
+    },
+    "margin": {
+      "left": 0,
+      "top": 0
+    },
+    "decorations": {
+      "enabled": false,
+      "xAxisGroups": null //left to be set by external page. example: {
+      //   "gdp_pcap": [
+      //     { "min": null, "max": 2650, "label": "incomegroups/level1", "label_short": "incomegroups/level1short" },
+      //     { "min": 2650, "max": 8000, "label": "incomegroups/level2", "label_short": "incomegroups/level2short" },
+      //     { "min": 8000, "max": 24200, "label": "incomegroups/level3", "label_short": "incomegroups/level3short" },
+      //     { "min": 24200, "max": null, "label": "incomegroups/level4", "label_short": "incomegroups/level4short" }
+      //   ]
+      // }
+    },
+
+    "map": {
+      "useBivariateColorScaleWithDataFromXY": false,
+      "bivariateColorPalette": "BlPu5",
+      "skipShapesLoading": false,
+      "missingDataColor": false, //"#999" or false for transparent
+      "preserveAspectRatio": true,
+      "mapEngine": "mapbox",
+      "mapStyle": "mapbox://styles/mapbox/light-v9",
+      "showBubbles": false,
+      "showAreas": true,
+      "showMap": true,
+      "path": null,
+      "projection": "mercator",
+      "topology": {
+        "path": "assets/shapes.json",
+        "objects": {
+          "areas": "shapes",
+          "boundaries": "shapes",
+        },
+        "geoIdProperty": "id",
+      }
+    }
   },
   "data-warning": {
-    margin: {
-      LARGE: { bottom: 90 },
-      MEDIUM: { bottom: 70 },
-      SMALL: { bottom: 50 }
+    "enable": false,
+    "margin": {
+      "LARGE": { "bottom": 90 },
+      "MEDIUM": { "bottom": 70 },
+      "SMALL": { "bottom": 50 }
+    }
+  }
+};
+
+Combo.DEFAULT_MODEL = {
+  "bubble": {
+    "requiredEncodings": [],
+    "requiredFields": {
+      "bubbleRequired": ["x", "y", "size"],
+      "mapRequired": ["size"]
+    },
+
+    "encoding": {
+      "show": {
+        "modelType": "selection"
+      },
+      "selected": {
+        "modelType": "selection"
+      },
+      "highlighted": {
+        "modelType": "selection"
+      },
+      "superhighlighted": {
+        "modelType": "selection"
+      },
+      "order": {
+        "modelType": "order",
+        "direction": "desc",
+        "data": {
+          "ref": "markers.bubble.config.encoding.size.data"
+        }
+      },
+      "color": {
+        "data": {
+          "constant": "_default"
+        },
+        "scale": {
+          "modelType": "color",
+          "type": "ordinal"
+        }
+      },
+      "color_map": {
+        "data": { },
+        "scale": {
+          "modelType": "color",
+          "borrowZoom": true,
+          "matchEncsToBorrowZoom": ["x", "y"],
+        }
+      },
+      "size": {
+        "data": { },
+        "scale": {
+          "modelType": "size",
+          "allowedTypes": ["linear", "point"],
+          "extent": [0, 1]
+        }
+      },
+      "x": {
+        "data": { },
+        "scale": {
+          "allowedTypes": ["linear", "log", "genericLog", "pow", "time"]
+        }
+      },
+      "y": {
+        "modelType": "lane",
+        "data": { },
+        "scale": {
+          "allowedTypes": ["linear", "log", "genericLog", "pow", "time", "rank"]
+        }
+      },
+      "label": {
+        "data": {
+          "modelType": "entityPropertyDataConfig"
+        }
+      },
+      "size_label": {
+        "data": {
+          "constant": "_default"
+        },
+        "scale": {
+          "modelType": "size",
+          "allowedTypes": ["linear", "log", "genericLog", "pow", "point", "ordinal"],
+          "extent": [0, 0.34]
+        }
+      },
+      "trail": { "modelType": "trail", "show": false },
+      "frame": {
+        "modelType": "frame",
+        "speed": 200,
+        "splash": true
+      },
+      "centroid": {
+        "data": { }
+      },
+      // "lat": {
+      //   data: {
+      //     space: ["geo"],
+      //     concept: "latitude"
+      //   }
+      // },
+      // "lon": {
+      //   data: {
+      //     space: ["geo"],
+      //     concept: "longitude"
+      //   }
+      // }
+    }
+  },
+  "legend": {
+    "data": {
+      "ref": {
+        "transform": "entityConceptSkipFilter",
+        "path": "markers.bubble.encoding.color"
+      }
+    },
+    "encoding": {
+      "color": {
+        "data": {
+          "concept": { "ref": "markers.bubble.encoding.color.data.concept" },
+          "constant": { "ref": "markers.bubble.encoding.color.data.constant" }
+        },
+        "scale": {
+          "modelType": "color",
+          "palette": { "ref": "markers.bubble.encoding.color.scale.palette" },
+          "domain": null,
+          "range": null,
+          "type": null,
+          "zoomed": null,
+          "zeroBaseline": false,
+          "clamp": false,
+          "allowedTypes": null
+        }
+        //"scale": { "ref": "markers.bubble.encoding.color.scale" }
+      },
+      "name": { "data": {  } },
+      "order": {
+        "modelType": "order",
+        "direction": "asc",
+        "data": { }
+      },
+      "map": { "data": { } }
+    }
+  },
+  "legend_map": {
+    "data": {
+      "ref": {
+        "transform": "entityConceptSkipFilter",
+        "path": "markers.bubble.encoding.color_map"
+      }
+    },
+    "encoding": {
+      "color": {
+        "data": {
+          "concept": { "ref": "markers.bubble.encoding.color_map.data.concept" },
+          "constant": { "ref": "markers.bubble.encoding.color_map.data.constant" }
+        },
+        "scale": {
+          "modelType": "color",
+          "palette": { "ref": "markers.bubble.encoding.color_map.scale.palette" }
+        }
+        //"scale": { "ref": "markers.bubble.encoding.color.scale" }
+      },
+      "name": { "data": { } },
+      "order": {
+        "modelType": "order",
+        "direction": "asc",
+        "data": { }
+      },
+      "map": { "data": { } }
     }
   }
 };
