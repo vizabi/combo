@@ -6,7 +6,6 @@ import {
   DataNotes,
   DataWarning,
   ErrorMessage,
-  SpaceConfig,
   LocaleService,
   LayoutService,
   CapitalVizabiService,
@@ -98,12 +97,6 @@ export default class Combo extends BaseComponent {
       model: marker,
       name: "buttons"
     },{
-      type: SpaceConfig,
-      placeholder: ".vzb-spaceconfig",
-      options: {button: ".vzb-spaceconfig-button"},
-      model: marker,
-      name: "space-config"
-    },{
       type: ErrorMessage,
       placeholder: ".vzb-errormessage",
       model: marker,
@@ -130,7 +123,6 @@ export default class Combo extends BaseComponent {
     <div class="vzb-treemenu"></div>
     <div class="vzb-marker-contextmenu"></div>
     <div class="vzb-datawarning"></div>
-    <div class="vzb-spaceconfig"></div>
     <div class="vzb-datanotes"></div>
     <div class="vzb-errormessage"></div>
     `;
