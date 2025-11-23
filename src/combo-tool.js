@@ -239,7 +239,7 @@ export default class Combo extends BaseComponent {
   
 }
 Combo.DEFAULT_UI = {
-  "locale": { "shortNumberFormat": true },
+  "locale": { "id": "en", "shortNumberFormat": true },
   "layout": { "projector": false },
   "buttons": {
     "buttons": ["markercontrols", "colors", "trails", "moreoptions", "presentation", "sidebarcollapse", "fullscreen"]
@@ -288,7 +288,7 @@ Combo.DEFAULT_UI = {
     "showForecast": false,
     "showForecastOverlay": true,
     "pauseBeforeForecast": true,
-    "endBeforeForecast": "2022",
+    "endBeforeForecast": null, //set this for each dataset
     "opacityHighlight": 1.0,
     "opacitySelect": 1.0,
     "opacityHighlightDim": 0.1,
@@ -450,9 +450,13 @@ Combo.DEFAULT_MODEL = {
         "speed": 200,
         "splash": true
       },
-      "centroid": {
-        "data": { }
-      },
+      // To place bubbles on map pick centroid or lat and lon
+      // "centroid": {
+      //   "data": {
+      //     "space": ["geo"],
+      //     "concept": "geo"
+      //   }
+      // },
       // "lat": {
       //   data: {
       //     space: ["geo"],
