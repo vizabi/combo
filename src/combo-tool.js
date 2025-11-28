@@ -265,6 +265,7 @@ Combo.DEFAULT_UI = {
     },
     "markercontrols": {
       "disableSlice": true,
+      "disableSwitch": false,
       "disableAddRemoveGroups": true,
       "primaryDim": null,
       "drilldown": null,
@@ -376,7 +377,12 @@ Combo.DEFAULT_MODEL = {
         "modelType": "selection"
       },
       "selected": {
-        "modelType": "selection"
+        "modelType": "selection",
+        "data": { 
+          "filter": { 
+            "ref": `markers.bubble.encoding.trail.data.filter`
+          }
+        }
       },
       "highlighted": {
         "modelType": "selection"
